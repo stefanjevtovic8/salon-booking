@@ -1,4 +1,3 @@
-import { api } from "./api";
 
 async function shrink(file: File, max = 800): Promise<Blob> {
   const bmp = await createImageBitmap(file);
