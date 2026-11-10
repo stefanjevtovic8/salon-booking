@@ -1,0 +1,27 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/fraunces";
+@import "tailwindcss";
+
+@theme inline {
+  --color-accent: var(--accent);
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+  --font-display: "Fraunces Variable", Georgia, serif;
+}
+:root { --accent: #b4543a; }
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-sans); background: #faf7f4; color: #292524; -webkit-tap-highlight-color: transparent; }
+button, a { transition: background-color .15s, border-color .15s, opacity .15s, transform .1s; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+button:active:not(:disabled) { transform: scale(.98); }
+:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, white); outline-offset: 2px; }
+
+@keyframes fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.fade-up { animation: fade-up .35s ease both; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+.skeleton { background: linear-gradient(90deg, #ece8e3 25%, #f5f2ee 50%, #ece8e3 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

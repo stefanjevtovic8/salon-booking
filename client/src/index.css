@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@theme inline { --color-accent: var(--accent); }
+:root { --accent: #b4543a; }
+body { background: #faf7f4; color: #292524; -webkit-tap-highlight-color: transparent; }
