@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { randomBytes, randomInt } from "crypto";
+import { randomBytes, randomInt } from "node:crypto";
 import { fromZonedTime } from "date-fns-tz";
 const db = new PrismaClient();
 const TZ = "Europe/Belgrade";
