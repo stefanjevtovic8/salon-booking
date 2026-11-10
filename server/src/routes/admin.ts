@@ -8,7 +8,7 @@ import { randomBytes, randomInt } from "node:crypto";
 import { HttpError, normalizePhone } from "../lib/booking.js";
 import { loadServices } from "../lib/availability.js";
 import { mailAppointment } from "../lib/mail.js";
-
+import { Prisma } from "@prisma/client";
 export const adminRouter = Router();
 const wrap = (fn: (q: Request, r: Response) => Promise<unknown>) => (q: Request, r: Response, n: NextFunction) => fn(q, r).catch(n);
 const pid = (q: Request) => z.coerce.number().int().parse(q.params.id);
@@ -260,7 +260,14 @@ adminRouter.put("/appointments/:id", wrap(async (q, r) => {
 adminRouter.get("/customers", wrap(async (q, r) => {
   const s = String(q.query.q ?? "").trim();
   const digits = s.replace(/\D/g, "").replace(/^(381|0)/, "");
-  const where = s ? { OR: [{ name: { contains: s, mode: "insensitive" } }, ...(digits.length >= 3 ? [{ phone: { contains: digits } }] : [])] } : {};
+  const where: Prisma.CustomerWhereInput = s
+  ? { 
+      OR: [
+        { name: { contains: s } }, 
+        ...(digits.length >= 3 ? [{ phone: { contains: digits } }] : [])
+      ] 
+    }
+  : {};
   const list = await db.customer.findMany({ where, take: 50, orderBy: { name: "asc" }, include: { appointments: { select: { startsAt: true, status: true } } } });
   r.json(list.map((c) => {
     const live = c.appointments.filter((a) => a.status !== "otkazan");
